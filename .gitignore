@@ -5,6 +5,9 @@ gens
 libs
 objs
 
+# Android build outputs
+.build-android-*/
+
 # Python items
 cython_debug/
 python_build/
