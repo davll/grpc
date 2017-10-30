@@ -5,8 +5,10 @@ gens
 libs
 objs
 
-# Android build outputs
+# iOSAndroid build outputs
 .build-android-*/
+.build-ios-*/
+.build-ios/
 
 # Python items
 cython_debug/
