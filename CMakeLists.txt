@@ -4682,9 +4682,15 @@ target_link_libraries(qps
 
 endif (gRPC_BUILD_TESTS)
 
-add_library(grpc_csharp_ext SHARED
-  src/csharp/ext/grpc_csharp_ext.c
-)
+if(IOS)
+  add_library(grpc_csharp_ext STATIC
+    src/csharp/ext/grpc_csharp_ext.c
+  )
+else()
+  add_library(grpc_csharp_ext SHARED
+    src/csharp/ext/grpc_csharp_ext.c
+  )
+endif()
 
 if(WIN32 AND MSVC)
   set_target_properties(grpc_csharp_ext PROPERTIES COMPILE_PDB_NAME "grpc_csharp_ext"
