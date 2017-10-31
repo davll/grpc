@@ -11,6 +11,8 @@ cmake -DIOS_PLATFORM=OS \
       -DgRPC_BUILD_TESTS=NO                          \
       -Dprotobuf_BUILD_EXAMPLES=NO                   \
       -DCMAKE_BUILD_TYPE=Release                     \
+      -DIOS=TRUE                       \
+      -DgRPC_ZLIB_PROVIDER=package \
       ../..
 make grpc_csharp_ext
 cd ../..
@@ -28,6 +30,8 @@ cmake -DIOS_PLATFORM=OS \
       -DgRPC_BUILD_TESTS=NO                          \
       -Dprotobuf_BUILD_EXAMPLES=NO                   \
       -DCMAKE_BUILD_TYPE=Release                     \
+      -DgRPC_ZLIB_PROVIDER=package \
+      -DIOS=TRUE                       \
       ../..
 make grpc_csharp_ext
 cd ../..
@@ -46,6 +50,7 @@ cmake -DIOS_PLATFORM=OS \
       -Dprotobuf_BUILD_EXAMPLES=NO                   \
       -DCMAKE_BUILD_TYPE=Release                     \
       -DIOS=TRUE                       \
+      -DgRPC_ZLIB_PROVIDER=package \
       ../..
 make grpc_csharp_ext
 cd ../..
@@ -77,7 +82,7 @@ lipo armv7/third_party/cares/cares/lib/libcares.a \
      arm64/third_party/cares/cares/lib/libcares.a \
      -create -output libcares.a
 
-lipo armv7/third_party/zlib/libz.a \
-     armv7s/third_party/zlib/libz.a \
-     arm64/third_party/zlib/libz.a \
-     -create -output libz.a
+#lipo armv7/third_party/zlib/libz.a \
+#     armv7s/third_party/zlib/libz.a \
+#     arm64/third_party/zlib/libz.a \
+#     -create -output libz.a
