@@ -5,6 +5,13 @@ gens
 libs
 objs
 
+# Mobile build outputs
+build-android/
+build-ios/
+
+# Temporary
+tmp/
+
 # Python items
 cython_debug/
 python_build/

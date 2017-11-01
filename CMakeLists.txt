@@ -263,7 +263,11 @@ if("${gRPC_BENCHMARK_PROVIDER}" STREQUAL "module")
     set(BENCHMARK_ROOT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/third_party/benchmark)
   endif()
   if(EXISTS "${BENCHMARK_ROOT_DIR}/CMakeLists.txt")
-      add_subdirectory(${BENCHMARK_ROOT_DIR} third_party/benchmark)
+      if((NOT ANDROID) AND (NOT IOS))
+        add_subdirectory(${BENCHMARK_ROOT_DIR} third_party/benchmark)
+      else()
+        set(BENCHMARK ${BENCHMARK_ROOT_DIR})
+      endif()
       if(TARGET benchmark)
           set(_gRPC_BENCHMARK_LIBRARIES benchmark)
       endif()
@@ -285,6 +289,8 @@ endif()
 
 if(_gRPC_PLATFORM_MAC)
   set(_gRPC_ALLTARGETS_LIBRARIES ${CMAKE_DL_LIBS} m pthread)
+elseif(ANDROID)
+  set(_gRPC_ALLTARGETS_LIBRARIES ${CMAKE_DL_LIBS} m log)
 elseif(UNIX)
   set(_gRPC_ALLTARGETS_LIBRARIES ${CMAKE_DL_LIBS} rt m pthread)
 endif()
@@ -4665,9 +4671,15 @@ target_link_libraries(qps
 
 endif (gRPC_BUILD_TESTS)
 
-add_library(grpc_csharp_ext SHARED
-  src/csharp/ext/grpc_csharp_ext.c
-)
+if(IOS)
+  add_library(grpc_csharp_ext STATIC
+    src/csharp/ext/grpc_csharp_ext.c
+  )
+else()
+  add_library(grpc_csharp_ext SHARED
+    src/csharp/ext/grpc_csharp_ext.c
+  )
+endif()
 
 if(WIN32 AND MSVC)
   set_target_properties(grpc_csharp_ext PROPERTIES COMPILE_PDB_NAME "grpc_csharp_ext"
