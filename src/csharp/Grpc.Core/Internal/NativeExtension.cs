@@ -37,13 +37,19 @@ namespace Grpc.Core.Internal
 
         private NativeExtension()
         {
+#if UNITY_EDITOR || UNITY_STANDALONE || UNITY_IOS || UNITY_ANDROID
+            this.nativeMethods = new NativeMethods();
+#else
             this.nativeMethods = new NativeMethods(Load());
+#endif
             
             // Redirect the the native logs as the very first thing after loading the native extension
             // to make sure we don't lose any logs.
             NativeLogRedirector.Redirect(this.nativeMethods);
 
+#if !(UNITY_EDITOR || UNITY_STANDALONE || UNITY_IOS || UNITY_ANDROID)
             DefaultSslRootsOverride.Override(this.nativeMethods);
+#endif
 
             Logger.Debug("gRPC native library loaded successfully.");
         }
@@ -74,6 +80,7 @@ namespace Grpc.Core.Internal
             get { return this.nativeMethods; }
         }
 
+#if !(UNITY_EDITOR || UNITY_STANDALONE || UNITY_IOS || UNITY_ANDROID)
         /// <summary>
         /// Detects which configuration of native extension to load and load it.
         /// </summary>
@@ -178,5 +185,6 @@ namespace Grpc.Core.Internal
             }
             throw new InvalidOperationException("Unsupported platform.");
         }
+#endif
     }
 }
